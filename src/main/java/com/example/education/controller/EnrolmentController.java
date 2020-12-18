@@ -40,7 +40,7 @@ public class EnrolmentController {
         return enrolmentService.findAllById(getEnrolmentStuDto.getSubjId());
     }
 
-    @GetMapping("/searchGroupByEnrolmentHello")
+    @GetMapping("/searchGroupByEnrolmentHello222")
     public List<Enrolment> searchGroupByEnrolment(){
         return enrolmentService.subjectGroupByIdStu();
     }
