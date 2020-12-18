@@ -9,10 +9,17 @@ import com.example.education.repo.SubjectRepo;
 import com.example.education.service.EnrolmentService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 @Service
@@ -46,17 +53,42 @@ public class EnrolmentImpl implements EnrolmentService {
         return enrolmentRepo.findAll();
     }
 
+
+
     @Override
     public Enrolment CreateEnrolment(int stuId,String subjId) throws NotFoundException {
+       try {
+
+
         Subject subj = subjectRepo.findBysubjId(subjId);
-        Student stu = studentRepo.findBystuId(stuId);
-
+        Student stu = studentRepo.findByStuId(stuId);
+        List<Subject> subjectList = subjectRepo.findAll();
         Enrolment e = new Enrolment();
-        e.setSubject(subj);
-        e.setStudent(stu);
-        return enrolmentRepo.save(e);
-    }
 
+        for(Subject sub :  subjectList){
+            if(sub.getSubjId().equals(subjId)){
+                //System.out.println(stuId);
+                System.out.println(sub.getStartTime());
+                //System.out.println(subj);
+                //System.out.println(stuId);
+
+                //เช็คช่วงเวลาหากเวลาที่เลือกลง อยู่ในช่วงเวลาที่มีอยู่แล้วไม่สามารถลงได้
+                List<String> list = enrolmentRepo.getTimeBySubject(sub.getStartTime());
+
+                if(list == null){
+                    e.setSubject(subj);
+                    e.setStudent(stu);
+                }else{
+                    return null;
+                }
+            }
+        }
+        return enrolmentRepo.save(e);
+       }catch (Exception e){
+           System.out.println("Not Success!!!");
+           return null;
+       }
+    }
     @Override
     public List<Enrolment> findAllById(String subjId) {
         List<Enrolment> enrolments = enrolmentRepo.findAll();
@@ -69,6 +101,5 @@ public class EnrolmentImpl implements EnrolmentService {
             i++;}
         return enrolmentsStudent;
     }
-
 
 }

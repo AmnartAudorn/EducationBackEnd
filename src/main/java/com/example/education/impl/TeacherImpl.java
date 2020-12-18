@@ -28,7 +28,6 @@ public class TeacherImpl implements TeacherService {
 
     @Override
     public Teacher CreateTeacher(Teacher teacher) {
-
         return teacherRepo.save(teacher);
     }
 }

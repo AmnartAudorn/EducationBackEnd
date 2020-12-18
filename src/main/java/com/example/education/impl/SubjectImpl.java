@@ -1,9 +1,6 @@
 package com.example.education.impl;
 
-import com.example.education.entity.Student;
 import com.example.education.entity.Subject;
-import com.example.education.entity.Teacher;
-import com.example.education.repo.StudentRepo;
 import com.example.education.repo.SubjectRepo;
 import com.example.education.repo.TeacherRepo;
 import com.example.education.service.SubjectService;
@@ -32,6 +29,7 @@ public class SubjectImpl implements SubjectService {
             return null;
         }
     }
+
 
 
 
